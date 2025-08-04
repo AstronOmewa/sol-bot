@@ -1,0 +1,11 @@
+{
+    "1.1": {
+        "name": "random task",
+        "max_points": 8,
+        "criteria": {
+            "1": {
+                "max": 1
+            }
+        }
+    }
+}
