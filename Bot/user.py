@@ -17,7 +17,7 @@ class User:
         self._nickname = str(nickname)
         self._registered = registered
         self._available_nums = available_nums
-        self._name = str(name).encode()
+        self._name = str(name)
         self._uid = str(uid)
         self._solutions = []
         self._sent_nums = []
@@ -85,12 +85,12 @@ class User:
         if not any([self.uid in db['users'][k].values() for k in range(len(db['users']))]): 
             db['users'].append({
                 "uid":str(self.uid),
-                "name":str(self.name).encode(),
-                "nickname":str(self.nickname).encode(),
+                "name":str(self.name),
+                "nickname":str(self.nickname),
                 "available_nums":[str(x) for x in self.available_nums],
                 "registered":True,
                 "is_admin":self.is_admin,
-                "yaContestName": str(self.yaContestName).encode(),
+                "yaContestName": str(self.yaContestName),
                 "rates":
                     {
                     

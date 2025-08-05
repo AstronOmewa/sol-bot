@@ -28,7 +28,6 @@ class Ticket:
         self._status = str(value).encode()
 
     def push_question(self, Q: object = {"id":0,"text":"text"}) -> None:
-
         """
         Appends given question (Q: object) to current ticket's chat history
         """

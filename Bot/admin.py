@@ -125,6 +125,7 @@ class Admin(User):
             obj = dict(json.load(keysFile))
             for key in obj['keys']:
                 if key == hashlib.sha256(key.encode('utf-8')):
+                    print(key, hashlib.sha256(key.encode('utf-8')))
                     obj['keys'][key]['used'] == False
             keysFile = open('keys.json','w')
             json.dump(obj, keysFile)
