@@ -77,13 +77,34 @@ def parse(info: str = 'Иванов И.И./0/ivanii/iiicontest') -> tuple:
     json.dump(keysDB, open('keys.json','w', encoding='utf-8'))
     return (name, adminKey in hashedKeys and not key_used, nickname, yaContestName, adminKey)
 
+def process_key(adminKey):
+    keysDB = json.load(open('keys.json', encoding='utf-8'))
+    key_used = any(hashlib.sha256(key.encode('utf-8')) == adminKey for key in keysDB['keys'].keys())
+
+    hashedKeys = []
+
+
+    for key in keysDB['keys'].keys():
+        # print(key)
+        hashedKeys.append(hashlib.sha256(key.encode('utf-8')).hexdigest())
+
+    if adminKey in hashedKeys:
+        for key in keysDB['keys']:
+            if hashlib.sha256(key.encode('utf-8')).hexdigest() == adminKey:
+                keysDB['keys'][key]['used'] = True
+    else:
+        adminKey = '0'
+
+    json.dump(keysDB, open('keys.json','w', encoding='utf-8'))
+    return (adminKey in hashedKeys and not key_used, adminKey)
+
 def get_latest_ticket_num()->int:
 
     """
     Returns latest ticket num in ticket database
     """
 
-    db = json.load(open('tickets.json','rb'))
+    db = json.load(open('tickets.json','r', encoding='utf-8'))
     try:
         return int(db[-1]['id'])
     except:
@@ -95,7 +116,7 @@ def get_ticket_data(id: int, usr: User) -> tuple:
     Returns id of ticket (int), uid of user created this ticket (int), chat history (obj) and ticket status (bool)
     """
 
-    db = json.load(open('tickets.json','rb'))
+    db = json.load(open('tickets.json','r', encoding='utf-8'))
 
     for obj in db:
         if obj['id']==id:

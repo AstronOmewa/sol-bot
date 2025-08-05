@@ -1,19 +1,22 @@
 from telebot import types
 import os
 import json
-
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
-# ==================== Databases ====================
-
-userdb = open('userDB.json','r+', encoding='utf-8')
-
-
+Global_NUMS_AVAILABLE = [obj['id'] for obj in json.load(open('OlympiadDB.json','r'))['Global_NUMS_AVAILABLE']]
 MAIN_MENU = {
     'Register' : 'Регистрация',
     'Deletion' : 'Удаление данных',
     'Help' : 'Помощь',
-    'Send' : 'Отправка решений'
+    'Send' : 'Отправка решений',
+    'Support' : 'Техподдержка'
+}
+
+SUPPORT_MENU = {
+    'Back' : 'На главную',
+    'RegError' : 'Ошибка регистрации',
+    'DelError' : 'Ошибка при удалении данных',
+    'Question' : 'Задать другой вопрос'
 }
 
 replies = {

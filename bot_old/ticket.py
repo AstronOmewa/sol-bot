@@ -31,20 +31,25 @@ class Ticket:
         """
         Appends given question (Q: object) to current ticket's chat history
         """
-        if Q['id']=='latest':
-            Q['id'] = [obj['id'] for obj in self.chat_history][-1]+1
-
-        self._chat_history[f"Q_{id}"]=str(Q['text']).encode()
-
-        db = json.load(open('tickets.json','r'))
-
-        for obj in db:
-
-            if obj['id']==self.id:
-                obj['chat_history'][f'Q_{id}']=self._chat_history[f"Q_{id}"]
+        
 
         
-        json.dump(db, open('tickets.json','w'))
+
+        db = dict(json.load(open('tickets.json','r', encoding='utf-8')))
+        
+        if Q['id'] == 'latest':
+            Q['id'] = max([obj['id'] for obj in db['tickets']])+1
+            self._id = Q['id']
+            
+        self._chat_history[f"Q_{id}"]=str(Q['text']).encode()
+
+        for obj in db['tickets']:
+
+            if obj['id']==self._id:
+                obj['chat_history'][f'Q_{id}']=self._chat_history[f"Q_{id}"]
+
+        print(db)
+        json.dump(db, open('tickets.json','w',encoding='utf-8'))
 
 
     def push_answer(self, A: object = {"id":0,"text":"text"}) -> None:
@@ -57,7 +62,7 @@ class Ticket:
         
         self._chat_history[f"Q_{id}"]=str(A['text']).encode()
 
-        db = json.load(open('tickets.json','r'))
+        db = json.load(open('tickets.json','r',encoding='utf-8'))
 
         for obj in db:
 
